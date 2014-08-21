@@ -70,11 +70,11 @@ Filed under <a href="/category/coding.html">Coding</a>
       </div>
       <div class="article-content span8">
 	<p>In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github&nbsp;site.</p>
-<p><a href="http://blog.getpelican.com/">Pelican</a> is a neat little static site generate, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use&nbsp;extensively.</p>
-<p><a href="https://pages.github.com/">Github pages</a> hosts websites directly from code repositories, an appealing idea, given Github already hosts all my publicly available&nbsp;code.</p>
-<p>Putting the two together was simple, but I faced one critical conceptual stumbling block: when making a User page (user.github.io) the processed html lives in the <em>main</em> branch of the git repository, while the source should live somewhere else, such a second branch called <em>source</em>. Thankfully, this <a href="http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/">post</a> cleared up much of my confusion. Below are my abbreviated instructions  for *nix&nbsp;systems:</p>
+<p><a href="http://blog.getpelican.com/">Pelican</a> is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use&nbsp;extensively.</p>
+<p><a href="https://pages.github.com/">Github pages</a> hosts websites directly from code repositories, an appealing idea given Github already hosts all my publicly available&nbsp;code.</p>
+<p>I faced one critical conceptual stumbling block: when making a User page (user.github.io) the processed html lives in the <em>main</em> branch of the git repository, while the source should live somewhere else, such a second branch called <em>source</em>. Thankfully, this <a href="http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/">post</a> cleared up much of my confusion. Below are my abbreviated instructions  for *nix&nbsp;systems:</p>
 <h2>Install&nbsp;Pelican</h2>
-<p>Install <a href="http://pip.readthedocs.org/en/latest/installing.html">pip</a>, if you are using python&lt;3.4 and pip isn&#8217;t already&nbsp;installed.</p>
+<p>If Pip is not already on your system, install it. <a href="http://pip.readthedocs.org/en/latest/installing.html">Directions</a>.</p>
 <p>To install Pelican, you can use a virtualenv if you prefer or simply use the <code>--user</code> flag. The ghp-import is used by the Pelican MakeFile to push the output folder to the main branch. To create content with <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>, you should also install the Markdown&nbsp;library.</p>
 <div class="highlight"><pre>pip install --user pelican ghp-import markdown
 </pre></div>
@@ -112,8 +112,7 @@ make serve
 
 
 <p>Done. In a couple minutes, your website should be visible at <span class="caps">YOURUSERNAME</span>.github.io.</p>
-<p>From here, peruse the <a href="http://docs.getpelican.com">Pelican documentation</a> for themes and other&nbsp;settings.</p>
-<p>In the <code>MakeFile</code> I changed the Github push line to <code>git push origin --all</code> so both the <code>master</code> and <code>source</code> branches would be&nbsp;pushed.</p> 
+<p>From here, peruse the <a href="http://docs.getpelican.com">Pelican documentation</a> for themes and other&nbsp;settings.</p> 
 	<a class="btn btn-mini xsmall" href="/blogging-with-github-pelican.html">
           <i class="icon-comment"></i> Comment </a>
 	<hr />
