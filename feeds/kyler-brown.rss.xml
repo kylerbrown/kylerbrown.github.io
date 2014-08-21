@@ -1,2 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kyler Brown</title><link>/</link><description></description><atom:link href="/feeds/kyler-brown.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 27 Feb 2014 00:00:00 -0600</lastBuildDate><item><title>test</title><link>/test.html</link><description>&lt;p&gt;Hey! This is a&amp;nbsp;test!&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kyler Brown</dc:creator><pubDate>Thu, 27 Feb 2014 00:00:00 -0600</pubDate><guid>tag:,2014-02-27:test.html</guid></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kyler Brown</title><link>/</link><description></description><atom:link href="/feeds/kyler-brown.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 20 Aug 2014 00:00:00 -0500</lastBuildDate><item><title>Blogging with Github + Pelican</title><link>/blogging-with-github-pelican.html</link><description>&lt;p&gt;In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github&amp;nbsp;site.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; is a neat little static site generate, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use&amp;nbsp;extensively.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://pages.github.com/"&gt;Github pages&lt;/a&gt; hosts websites directly from code repositories, an appealing idea, given Github already hosts all my publicly available&amp;nbsp;code.&lt;/p&gt;
+&lt;p&gt;Putting the two together was simple, but I faced one critical conceptual stumbling block: when making a User page (user.github.io) the processed html lives in the &lt;em&gt;main&lt;/em&gt; branch of the git repository, while the source should live somewhere else, such a second branch called &lt;em&gt;source&lt;/em&gt;. Thankfully, this &lt;a href="http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/"&gt;post&lt;/a&gt; cleared up much of my confusion. Below are my abbreviated instructions  for *nix&amp;nbsp;systems:&lt;/p&gt;
+&lt;h2&gt;Install&amp;nbsp;Pelican&lt;/h2&gt;
+&lt;p&gt;Install &lt;a href="http://pip.readthedocs.org/en/latest/installing.html"&gt;pip&lt;/a&gt;, if you are using python&amp;lt;3.4 and pip isn&amp;#8217;t already&amp;nbsp;installed.&lt;/p&gt;
+&lt;p&gt;To install Pelican, you can use a virtualenv if you prefer or simply use the &lt;code&gt;--user&lt;/code&gt; flag. The ghp-import is used by the Pelican MakeFile to push the output folder to the main branch. To create content with &lt;a href="http://daringfireball.net/projects/markdown/syntax"&gt;Markdown&lt;/a&gt;, you should also install the Markdown&amp;nbsp;library.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install --user pelican ghp-import markdown
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Create the Github&amp;nbsp;repository&lt;/h2&gt;
+&lt;p&gt;If not already created, create the repository by following the instructions 1-2 &lt;a href="https://pages.github.com/#user-site"&gt;here&lt;/a&gt;,&amp;nbsp;then&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;YOURUSERNAME.github.io
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Generate a skeleton pelican&amp;nbsp;project&lt;/h2&gt;
+&lt;p&gt;Add a skeleton pelican project to the &lt;code&gt;source&lt;/code&gt; branch&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;git checkout -b &lt;span class="nb"&gt;source&lt;/span&gt;
+pelican-quickstart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Create some&amp;nbsp;content&lt;/h2&gt;
+&lt;p&gt;Content is added to the &lt;code&gt;content&lt;/code&gt; folder, see the &lt;a href="http://docs.getpelican.com/en/3.4.0/content.html"&gt;pelican&lt;/a&gt; documentation for formatting&amp;nbsp;details. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;Title: Example\nDate: 1970-01-01\n Hello, Internet!&amp;quot;&lt;/span&gt; &amp;gt; content/examplepost.md
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Preview&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;make html
+make serve
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Point your browser to &lt;code&gt;localhost:8000&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Publish&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;make github
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Done. In a couple minutes, your website should be visible at &lt;span class="caps"&gt;YOURUSERNAME&lt;/span&gt;.github.io.&lt;/p&gt;
+&lt;p&gt;From here, peruse the &lt;a href="http://docs.getpelican.com"&gt;Pelican documentation&lt;/a&gt; for themes and other&amp;nbsp;settings.&lt;/p&gt;
+&lt;p&gt;In the &lt;code&gt;MakeFile&lt;/code&gt; I changed the Github push line to &lt;code&gt;git push origin --all&lt;/code&gt; so both the &lt;code&gt;master&lt;/code&gt; and &lt;code&gt;source&lt;/code&gt; branches would be&amp;nbsp;pushed.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kyler Brown</dc:creator><pubDate>Wed, 20 Aug 2014 00:00:00 -0500</pubDate><guid>tag:,2014-08-20:blogging-with-github-pelican.html</guid><category>pelican</category><category>python</category></item></channel></rss>
