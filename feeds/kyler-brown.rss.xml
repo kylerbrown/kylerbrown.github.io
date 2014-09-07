@@ -53,34 +53,25 @@ sparse and the errors too cryptic to make any real headway on the&amp;nbsp;probl
 called &lt;a class="reference external" href="http://www.qgis.org"&gt;&lt;span class="caps"&gt;QGIS&lt;/span&gt;&lt;/a&gt;. To convert a shapefile to
 geographic coordinates, first load in the shapefile by clicking
 &lt;tt class="docutils literal"&gt;Layer&amp;gt;Add Vector &lt;span class="pre"&gt;Layer...&lt;/span&gt;&lt;/tt&gt; in the menu and then load the&amp;nbsp;shapefile.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.core.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
-&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;QGIS_load_vector.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;img alt="" src="/images/convert-shapefile/output_6_0.png" /&gt;
+&lt;img alt="Add vector layer" src="/images/convert-shapefile/output_6_0.png" /&gt;
 &lt;p&gt;Once the shapefile is loaded, you should see the shapes in &lt;span class="caps"&gt;QGIS&lt;/span&gt;. To
 export in the correct format, right click on the layer name in the
 Layers section and select &lt;tt class="docutils literal"&gt;Save &lt;span class="pre"&gt;as...&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;QGIS_layer_save_as.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;img alt="" src="/images/convert-shapefile/output_8_0.png" /&gt;
+&lt;img alt="save as" src="/images/convert-shapefile/output_8_0.png" /&gt;
 &lt;p&gt;In the &lt;span class="caps"&gt;CRS&lt;/span&gt; section, select &lt;tt class="docutils literal"&gt;browse&lt;/tt&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;QGIS_CRS_browse.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;img alt="" src="/images/convert-shapefile/output_10_0.png" /&gt;
+&lt;img alt="browse" src="/images/convert-shapefile/output_10_0.png" /&gt;
 &lt;p&gt;There is an &lt;em&gt;unbelievable&lt;/em&gt; number of geometric &lt;span class="caps"&gt;CRS&lt;/span&gt; formats. After
 consulting
 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Geographic_coordinate_system"&gt;Wikipedia&lt;/a&gt;,
 I choose &lt;span class="caps"&gt;WGS&lt;/span&gt;&amp;nbsp;84.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;select_WGS_84.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;img alt="" src="/images/convert-shapefile/output_12_0.png" /&gt;
+&lt;img alt="WGS 84" src="/images/convert-shapefile/output_12_0.png" /&gt;
 &lt;p&gt;Hit &lt;span class="caps"&gt;OK&lt;/span&gt;, give you new shape file a new name and complete the export
 process. Now try reading the new&amp;nbsp;file:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readshapefile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Neighborhoods_geometric&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Neighborhoods&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;img alt="" src="/images/convert-shapefile/output_14_0.png" /&gt;
+&lt;img alt="shapefile in matplotlib" src="/images/convert-shapefile/output_14_0.png" /&gt;
 &lt;p&gt;The shapefile should now be plotted in&amp;nbsp;matplotlib.&lt;/p&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kyler Brown</dc:creator><pubDate>Sat, 06 Sep 2014 00:00:00 -0500</pubDate><guid>tag:,2014-09-06:convert-display-shapefile-matplotlib.html</guid><category>matplotlib</category><category>basemap</category><category>GIS</category><category>shapefile</category></item><item><title>Blogging with Github + Pelican</title><link>/blogging-with-github-pelican.html</link><description>&lt;p&gt;In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github&amp;nbsp;site.&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use&amp;nbsp;extensively.&lt;/p&gt;
