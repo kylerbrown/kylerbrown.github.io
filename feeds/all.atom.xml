@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Fasciculus</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2014-08-20T00:00:00-05:00</updated><entry><title>Blogging with Github + Pelican</title><link href="/blogging-with-github-pelican.html" rel="alternate"></link><updated>2014-08-20T00:00:00-05:00</updated><author><name>Kyler Brown</name></author><id>tag:,2014-08-20:blogging-with-github-pelican.html</id><summary type="html">&lt;p&gt;In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github&amp;nbsp;site.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Fasciculus</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2014-09-06T00:00:00-05:00</updated><entry><title>Convert and Display a Shapefile in Matplotlib</title><link href="/convert-display-shapefile-matplotlib.html" rel="alternate"></link><updated>2014-09-06T00:00:00-05:00</updated><author><name>Kyler Brown</name></author><id>tag:,2014-09-06:convert-display-shapefile-matplotlib.html</id><summary type="html">&lt;p&gt;For this tutorial, I will use a shapefile containing the Chicago
+neighborhoods, which I would like to display with matplotlib. The data
+is available from the &lt;a class="reference external" href="https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/9wp7-iasj"&gt;city of
+Chicago&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;First we will setup a
+&lt;a class="reference external" href="http://matplotlib.org/basemap/users/examples.html"&gt;Basemap&lt;/a&gt;, which
+maps data onto map&amp;nbsp;projections.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;mpl_toolkits.basemap&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Basemap&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Basemap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;llcrnrlon&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mf"&gt;87.906463888372286&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="n"&gt;llcrnrlat&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;41.64846088888256&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="n"&gt;urcrnrlon&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mf"&gt;87.525897644283177&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="n"&gt;urcrnrlat&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;42.022643093713917&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="n"&gt;projection&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;merc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I&amp;#8217;ve initialized our object with Chicago&amp;#8217;s latitude and longitude, and
+will now attempt to read the neighborhood&amp;nbsp;shapefile.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readshapefile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Neighborhoods_2012/Neighborhoods_2012b&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                    &lt;span class="s"&gt;&amp;quot;Neighborhoods&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;pre class="literal-block"&gt;
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+
+&amp;lt;ipython-input-3-05ac522048d4&amp;gt; in &amp;lt;module&amp;gt;()
+      1 s = m.readshapefile(&amp;quot;Neighborhoods_2012/Neighborhoods_2012b&amp;quot;,
+----&amp;gt; 2                     &amp;quot;Neighborhoods&amp;quot;)
+
+
+/home/kyler/anaconda/lib/python3.3/site-packages/mpl_toolkits/basemap/__init__.py in readshapefile(self, shapefile, name, drawbounds, zorder, linewidth, color, antialiased, ax, default_encoding)
+   2175                     lons, lats = list(zip(*verts[indx1:indx2]))
+   2176                     if max(lons) &amp;gt; 721. or min(lons) &amp;lt; -721. or max(lats) &amp;gt; 90.01 or min(lats) &amp;lt; -90.01:
+-&amp;gt; 2177                         raise ValueError(msg)
+   2178                     # if latitude is slightly greater than 90, truncate to 90
+   2179                     lats = [max(min(lat, 90.0), -90.0) for lat in lats]
+
+
+ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
+in map projection coordinates. You can convert the shapefile to geographic
+coordinates using the shpproj utility from the shapelib tools
+(http://shapelib.maptools.org/shapelib-tools.html)
+&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;ERRORS&lt;/span&gt;!&lt;/strong&gt; Perhaps, at this point maybe you can see your shapefile.
+Lucky&amp;nbsp;you!&lt;/p&gt;
+&lt;p&gt;It appears this particular shapefile isn&amp;#8217;t formatted correctly. The
+error displays a link to a program,
+&lt;a class="reference external" href="http://shapelib.maptools.org/shapelib-tools.html"&gt;shpproj&lt;/a&gt;, but
+after finally getting the program to compile the documentation was too
+sparse and the errors too cryptic to make any real headway on the&amp;nbsp;problem.&lt;/p&gt;
+&lt;p&gt;Eventually, I solved the conversion issue using a free &lt;span class="caps"&gt;GIS&lt;/span&gt; program
+called &lt;a class="reference external" href="http://www.qgis.org"&gt;&lt;span class="caps"&gt;QGIS&lt;/span&gt;&lt;/a&gt;. To convert a shapefile to
+geographic coordinates, first load in the shapefile by clicking
+&lt;tt class="docutils literal"&gt;Layer&amp;gt;Add Vector &lt;span class="pre"&gt;Layer...&lt;/span&gt;&lt;/tt&gt; in the menu and then load the&amp;nbsp;shapefile.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.core.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
+&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;QGIS_load_vector.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;img alt="" src="/images/convert-shapefile/output_6_0.png" /&gt;
+&lt;p&gt;Once the shapefile is loaded, you should see the shapes in &lt;span class="caps"&gt;QGIS&lt;/span&gt;. To
+export in the correct format, right click on the layer name in the
+Layers section and select &lt;tt class="docutils literal"&gt;Save &lt;span class="pre"&gt;as...&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;QGIS_layer_save_as.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;img alt="" src="/images/convert-shapefile/output_8_0.png" /&gt;
+&lt;p&gt;In the &lt;span class="caps"&gt;CRS&lt;/span&gt; section, select &lt;tt class="docutils literal"&gt;browse&lt;/tt&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;QGIS_CRS_browse.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;img alt="" src="/images/convert-shapefile/output_10_0.png" /&gt;
+&lt;p&gt;There is an &lt;em&gt;unbelievable&lt;/em&gt; number of geometric &lt;span class="caps"&gt;CRS&lt;/span&gt; formats. After
+consulting
+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Geographic_coordinate_system"&gt;Wikipedia&lt;/a&gt;,
+I choose &lt;span class="caps"&gt;WGS&lt;/span&gt;&amp;nbsp;84.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;select_WGS_84.png&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;img alt="" src="/images/convert-shapefile/output_12_0.png" /&gt;
+&lt;p&gt;Hit &lt;span class="caps"&gt;OK&lt;/span&gt;, give you new shape file a new name and complete the export
+process. Now try reading the new&amp;nbsp;file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readshapefile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Neighborhoods_geometric&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Neighborhoods&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;img alt="" src="/images/convert-shapefile/output_14_0.png" /&gt;
+&lt;p&gt;The shapefile should now be plotted in&amp;nbsp;matplotlib.&lt;/p&gt;
+</summary><category term="matplotlib"></category><category term="basemap"></category><category term="GIS"></category><category term="shapefile"></category></entry><entry><title>Blogging with Github + Pelican</title><link href="/blogging-with-github-pelican.html" rel="alternate"></link><updated>2014-08-20T00:00:00-05:00</updated><author><name>Kyler Brown</name></author><id>tag:,2014-08-20:blogging-with-github-pelican.html</id><summary type="html">&lt;p&gt;In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github&amp;nbsp;site.&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use&amp;nbsp;extensively.&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://pages.github.com/"&gt;Github pages&lt;/a&gt; hosts websites directly from code repositories, an appealing idea given Github already hosts all my publicly available&amp;nbsp;code.&lt;/p&gt;
 &lt;p&gt;I faced one critical conceptual stumbling block: when making a User page (user.github.io) the processed html lives in the &lt;em&gt;main&lt;/em&gt; branch of the git repository, while the source should live somewhere else, such a second branch called &lt;em&gt;source&lt;/em&gt;. Thankfully, this &lt;a href="http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/"&gt;post&lt;/a&gt; cleared up much of my confusion. Below are my abbreviated instructions  for *nix&amp;nbsp;systems:&lt;/p&gt;

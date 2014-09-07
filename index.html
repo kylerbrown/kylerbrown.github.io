@@ -33,7 +33,7 @@
       <div class="span3" id="blog-nav">
 	<ul class="nav nav-pills pull-right">
 	    <li >
-	      <a href="/category/coding.html ">Coding</a>
+	      <a href="/category/python.html ">Python</a>
 	</ul>
       </div>
     </div> <!-- End of fluid row-->
@@ -51,15 +51,132 @@
 
     <div class='row-fluid''>
         <div class="article-title span9">
-            <a href="/blogging-with-github-pelican.html"><h1>Blogging with Github +&nbsp;Pelican</h1></a>
+            <a href="/convert-display-shapefile-matplotlib.html"><h1>Convert and Display a Shapefile in&nbsp;Matplotlib</h1></a>
         </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span2">
+<p>Sat 06 September 2014 </p>
+
+<p style="text-align: left;">
+Filed under <a href="/category/python.html">Python</a>
+</p>
+<p style="text-align: left;">
+ 
+    Tags <a href="/tag/matplotlib.html">matplotlib</a> <a href="/tag/basemap.html">basemap</a> <a href="/tag/gis.html">GIS</a> <a href="/tag/shapefile.html">shapefile</a> </p>
+<p>
+<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="kye_brown">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+</p>
+      </div>
+      <div class="article-content span8">
+	<p>For this tutorial, I will use a shapefile containing the Chicago
+neighborhoods, which I would like to display with matplotlib. The data
+is available from the <a class="reference external" href="https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/9wp7-iasj">city of
+Chicago</a>.</p>
+<p>First we will setup a
+<a class="reference external" href="http://matplotlib.org/basemap/users/examples.html">Basemap</a>, which
+maps data onto map&nbsp;projections.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">llcrnrlon</span><span class="o">=-</span><span class="mf">87.906463888372286</span><span class="p">,</span>
+            <span class="n">llcrnrlat</span><span class="o">=</span><span class="mf">41.64846088888256</span><span class="p">,</span>
+            <span class="n">urcrnrlon</span><span class="o">=-</span><span class="mf">87.525897644283177</span><span class="p">,</span>
+            <span class="n">urcrnrlat</span><span class="o">=</span><span class="mf">42.022643093713917</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="s">&quot;merc&quot;</span><span class="p">)</span>
+</pre></div>
+<p>I&#8217;ve initialized our object with Chicago&#8217;s latitude and longitude, and
+will now attempt to read the neighborhood&nbsp;shapefile.</p>
+<div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">readshapefile</span><span class="p">(</span><span class="s">&quot;Neighborhoods_2012/Neighborhoods_2012b&quot;</span><span class="p">,</span>
+                    <span class="s">&quot;Neighborhoods&quot;</span><span class="p">)</span>
+</pre></div>
+<pre class="literal-block">
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+
+&lt;ipython-input-3-05ac522048d4&gt; in &lt;module&gt;()
+      1 s = m.readshapefile(&quot;Neighborhoods_2012/Neighborhoods_2012b&quot;,
+----&gt; 2                     &quot;Neighborhoods&quot;)
+
+
+/home/kyler/anaconda/lib/python3.3/site-packages/mpl_toolkits/basemap/__init__.py in readshapefile(self, shapefile, name, drawbounds, zorder, linewidth, color, antialiased, ax, default_encoding)
+   2175                     lons, lats = list(zip(*verts[indx1:indx2]))
+   2176                     if max(lons) &gt; 721. or min(lons) &lt; -721. or max(lats) &gt; 90.01 or min(lats) &lt; -90.01:
+-&gt; 2177                         raise ValueError(msg)
+   2178                     # if latitude is slightly greater than 90, truncate to 90
+   2179                     lats = [max(min(lat, 90.0), -90.0) for lat in lats]
+
+
+ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
+in map projection coordinates. You can convert the shapefile to geographic
+coordinates using the shpproj utility from the shapelib tools
+(http://shapelib.maptools.org/shapelib-tools.html)
+</pre>
+<p><strong><span class="caps">ERRORS</span>!</strong> Perhaps, at this point maybe you can see your shapefile.
+Lucky&nbsp;you!</p>
+<p>It appears this particular shapefile isn&#8217;t formatted correctly. The
+error displays a link to a program,
+<a class="reference external" href="http://shapelib.maptools.org/shapelib-tools.html">shpproj</a>, but
+after finally getting the program to compile the documentation was too
+sparse and the errors too cryptic to make any real headway on the&nbsp;problem.</p>
+<p>Eventually, I solved the conversion issue using a free <span class="caps">GIS</span> program
+called <a class="reference external" href="http://www.qgis.org"><span class="caps">QGIS</span></a>. To convert a shapefile to
+geographic coordinates, first load in the shapefile by clicking
+<tt class="docutils literal">Layer&gt;Add Vector <span class="pre">Layer...</span></tt> in the menu and then load the&nbsp;shapefile.</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="s">&quot;QGIS_load_vector.png&quot;</span><span class="p">)</span>
+</pre></div>
+<img alt="" src="/images/convert-shapefile/output_6_0.png" />
+<p>Once the shapefile is loaded, you should see the shapes in <span class="caps">QGIS</span>. To
+export in the correct format, right click on the layer name in the
+Layers section and select <tt class="docutils literal">Save <span class="pre">as...</span></tt>.</p>
+<div class="highlight"><pre><span class="n">Image</span><span class="p">(</span><span class="s">&quot;QGIS_layer_save_as.png&quot;</span><span class="p">)</span>
+</pre></div>
+<img alt="" src="/images/convert-shapefile/output_8_0.png" />
+<p>In the <span class="caps">CRS</span> section, select <tt class="docutils literal">browse</tt>.</p>
+<div class="highlight"><pre><span class="n">Image</span><span class="p">(</span><span class="s">&quot;QGIS_CRS_browse.png&quot;</span><span class="p">)</span>
+</pre></div>
+<img alt="" src="/images/convert-shapefile/output_10_0.png" />
+<p>There is an <em>unbelievable</em> number of geometric <span class="caps">CRS</span> formats. After
+consulting
+<a class="reference external" href="http://en.wikipedia.org/wiki/Geographic_coordinate_system">Wikipedia</a>,
+I choose <span class="caps">WGS</span>&nbsp;84.</p>
+<div class="highlight"><pre><span class="n">Image</span><span class="p">(</span><span class="s">&quot;select_WGS_84.png&quot;</span><span class="p">)</span>
+</pre></div>
+<img alt="" src="/images/convert-shapefile/output_12_0.png" />
+<p>Hit <span class="caps">OK</span>, give you new shape file a new name and complete the export
+process. Now try reading the new&nbsp;file:</p>
+<div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">readshapefile</span><span class="p">(</span><span class="s">&quot;Neighborhoods_geometric&quot;</span><span class="p">,</span><span class="s">&quot;Neighborhoods&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<img alt="" src="/images/convert-shapefile/output_14_0.png" />
+<p>The shapefile should now be plotted in&nbsp;matplotlib.</p>
+ 
+	<a class="btn btn-mini xsmall" href="/convert-display-shapefile-matplotlib.html">
+          <i class="icon-comment"></i> Comment </a>
+	<hr />
+      </div>
+      
+    </div>
+    
+
+ 
+        
+
+
+
+    <div class='row-fluid'>
+      <div class='article-title span9'> 
+        <a href="/blogging-with-github-pelican.html"><h1>Blogging with Github +&nbsp;Pelican</h1></a>
+      </div>
     </div>
     <div class="row-fluid">
       <div class="span2">
 <p>Wed 20 August 2014 </p>
 
 <p style="text-align: left;">
-Filed under <a href="/category/coding.html">Coding</a>
+Filed under <a href="/category/python.html">Python</a>
 </p>
 <p style="text-align: left;">
  
@@ -68,58 +185,16 @@ Filed under <a href="/category/coding.html">Coding</a>
 <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="kye_brown">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 </p>
       </div>
-      <div class="article-content span8">
+      <div class="summary span8">
 	<p>In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github&nbsp;site.</p>
-<p><a href="http://blog.getpelican.com/">Pelican</a> is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use&nbsp;extensively.</p>
-<p><a href="https://pages.github.com/">Github pages</a> hosts websites directly from code repositories, an appealing idea given Github already hosts all my publicly available&nbsp;code.</p>
-<p>I faced one critical conceptual stumbling block: when making a User page (user.github.io) the processed html lives in the <em>main</em> branch of the git repository, while the source should live somewhere else, such a second branch called <em>source</em>. Thankfully, this <a href="http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/">post</a> cleared up much of my confusion. Below are my abbreviated instructions  for *nix&nbsp;systems:</p>
-<h2>Install&nbsp;Pelican</h2>
-<p>If Pip is not already on your system, install it. <a href="http://pip.readthedocs.org/en/latest/installing.html">Directions</a>.</p>
-<p>To install Pelican, you can use a virtualenv if you prefer or simply use the <code>--user</code> flag. The ghp-import is used by the Pelican MakeFile to push the output folder to the main branch. To create content with <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>, you should also install the Markdown&nbsp;library.</p>
-<div class="highlight"><pre>pip install --user pelican ghp-import markdown
-</pre></div>
-
-
-<h2>Create the Github&nbsp;repository</h2>
-<p>If not already created, create the repository by following the instructions 1-2 <a href="https://pages.github.com/#user-site">here</a>,&nbsp;then</p>
-<div class="highlight"><pre><span class="nb">cd </span>YOURUSERNAME.github.io
-</pre></div>
-
-
-<h2>Generate a skeleton pelican&nbsp;project</h2>
-<p>Add a skeleton pelican project to the <code>source</code> branch</p>
-<div class="highlight"><pre>git checkout -b <span class="nb">source</span>
-pelican-quickstart
-</pre></div>
-
-
-<h2>Create some&nbsp;content</h2>
-<p>Content is added to the <code>content</code> folder, see the <a href="http://docs.getpelican.com/en/3.4.0/content.html">pelican</a> documentation for formatting&nbsp;details. </p>
-<div class="highlight"><pre><span class="nb">echo</span> -e <span class="s2">&quot;Title: Example\nDate: 1970-01-01\n Hello, Internet!&quot;</span> &gt; content/examplepost.md
-</pre></div>
-
-
-<h2>Preview</h2>
-<div class="highlight"><pre>make html
-make serve
-</pre></div>
-
-
-<p>Point your browser to <code>localhost:8000</code>.</p>
-<h2>Publish</h2>
-<div class="highlight"><pre>make github
-</pre></div>
-
-
-<p>Done. In a couple minutes, your website should be visible at <span class="caps">YOURUSERNAME</span>.github.io.</p>
-<p>From here, peruse the <a href="http://docs.getpelican.com">Pelican documentation</a> for themes and other&nbsp;settings.</p> 
+<p><a href="http://blog.getpelican.com/">Pelican</a> is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the ...</p> 
 	<a class="btn btn-mini xsmall" href="/blogging-with-github-pelican.html">
-          <i class="icon-comment"></i> Comment </a>
+          <i class="icon-plus-sign"></i> Read More </a>
 	<hr />
       </div>
       
     </div>
-    
+      
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
