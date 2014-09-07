@@ -20,13 +20,12 @@ will now attempt to read the neighborhood&amp;nbsp;shapefile.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readshapefile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Neighborhoods_2012/Neighborhoods_2012b&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                     &lt;span class="s"&gt;&amp;quot;Neighborhoods&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;dl class="docutils"&gt;
-&lt;dt&gt;::&lt;/dt&gt;
-&lt;dd&gt;ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
+&lt;pre class="literal-block"&gt;
+ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
 in map projection coordinates. You can convert the shapefile to geographic
 coordinates using the shpproj utility from the shapelib tools
-(&lt;a class="reference external" href="http://shapelib.maptools.org/shapelib-tools.html"&gt;http://shapelib.maptools.org/shapelib-tools.html&lt;/a&gt;)&lt;/dd&gt;
-&lt;/dl&gt;
+(http://shapelib.maptools.org/shapelib-tools.html)
+&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;&lt;span class="caps"&gt;ERRORS&lt;/span&gt;!&lt;/strong&gt; Perhaps, at this point you can see your shapefile.
 Lucky&amp;nbsp;you!&lt;/p&gt;
 &lt;p&gt;It appears this particular shapefile isn&amp;#8217;t formatted correctly. The

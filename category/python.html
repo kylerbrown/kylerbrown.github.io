@@ -90,13 +90,12 @@ will now attempt to read the neighborhood&nbsp;shapefile.</p>
 <div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">readshapefile</span><span class="p">(</span><span class="s">&quot;Neighborhoods_2012/Neighborhoods_2012b&quot;</span><span class="p">,</span>
                     <span class="s">&quot;Neighborhoods&quot;</span><span class="p">)</span>
 </pre></div>
-<dl class="docutils">
-<dt>::</dt>
-<dd>ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
+<pre class="literal-block">
+ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
 in map projection coordinates. You can convert the shapefile to geographic
 coordinates using the shpproj utility from the shapelib tools
-(<a class="reference external" href="http://shapelib.maptools.org/shapelib-tools.html">http://shapelib.maptools.org/shapelib-tools.html</a>)</dd>
-</dl>
+(http://shapelib.maptools.org/shapelib-tools.html)
+</pre>
 <p><strong><span class="caps">ERRORS</span>!</strong> Perhaps, at this point you can see your shapefile.
 Lucky&nbsp;you!</p>
 <p>It appears this particular shapefile isn&#8217;t formatted correctly. The
