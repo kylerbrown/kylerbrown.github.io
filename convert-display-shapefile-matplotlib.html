@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Convert and Display a Shapefile in Matplotlib | Kyler Brown
+</title>
+  <link rel="canonical" href="./convert-display-shapefile-matplotlib.html">
+
+
+  <link rel="stylesheet" href="./theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="./theme/css/theme.css">
+
+  
+  <meta name="description" content="Convert a shapefile to geographic coordinates and display using matplotlib and basemap.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title"><a href="./">Kyler Brown</a></h1>
+      <p class="text-muted">Work and Play as a Data Scientist</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a href="#" target="_blank">About</a></li>
+            <li class=" list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a class="fa fa-github" href="https://github.com/kylerbrown" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fa fa-linkedin" href="https://www.linkedin.com/in/kylerbrown/" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fa fa-twitter" href="https://twitter.com/kye_brown" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Convert and Display a Shapefile in Matplotlib
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2014-09-06T00:00:00-07:00">
+          <i class="fa fa-clock-o"></i>
+          Sat 06 September 2014
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-folder-open-o"></i>
+          <a href="./category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fa fa-user-o"></i>
+              <a href="./author/kyler-brown.html">Kyler Brown</a>          </li>
+          <li class="list-inline-item">
+            <i class="fa fa-files-o"></i>
+              <a href="./tag/matplotlib.html">#matplotlib</a>,               <a href="./tag/basemap.html">#basemap</a>,               <a href="./tag/gis.html">#GIS</a>,               <a href="./tag/shapefile.html">#shapefile</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <p>For this tutorial, I will use a <a class="reference external" href="http://en.wikipedia.org/wiki/Shapefile">shapefile</a> containing Chicago's
+neighborhoods, which I would like to display with matplotlib. The data
+is available from the <a class="reference external" href="https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-Neighborhoods/9wp7-iasj">city of
+Chicago data portal</a>.</p>
+<p>First we will setup a
+<a class="reference external" href="http://matplotlib.org/basemap/users/examples.html">Basemap</a>, which
+maps data onto map projections.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">llcrnrlon</span><span class="o">=-</span><span class="mf">87.906463888372286</span><span class="p">,</span>
+            <span class="n">llcrnrlat</span><span class="o">=</span><span class="mf">41.64846088888256</span><span class="p">,</span>
+            <span class="n">urcrnrlon</span><span class="o">=-</span><span class="mf">87.525897644283177</span><span class="p">,</span>
+            <span class="n">urcrnrlat</span><span class="o">=</span><span class="mf">42.022643093713917</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">)</span>
+</pre></div>
+<p>I've initialized our object with Chicago's latitude and longitude, and
+will now attempt to read the neighborhood shapefile.</p>
+<div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">readshapefile</span><span class="p">(</span><span class="s2">&quot;Neighborhoods_2012/Neighborhoods_2012b&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Neighborhoods&quot;</span><span class="p">)</span>
+</pre></div>
+<pre class="literal-block">
+ValueError: shapefile must have lat/lon vertices  - it looks like this one has vertices
+in map projection coordinates. You can convert the shapefile to geographic
+coordinates using the shpproj utility from the shapelib tools
+(http://shapelib.maptools.org/shapelib-tools.html)
+</pre>
+<p><strong>ERRORS!</strong> Perhaps, at this point you can see your shapefile.
+Lucky you!</p>
+<p>It appears this particular shapefile isn't formatted correctly. The
+error displays a link to a program,
+<a class="reference external" href="http://shapelib.maptools.org/shapelib-tools.html">shpproj</a>, but
+after finally getting the program to compile the documentation was too
+sparse and the errors too cryptic to make any real headway on the
+problem.</p>
+<p>Eventually, I solved the conversion issue using a free GIS program
+called <a class="reference external" href="http://www.qgis.org">QGIS</a>. To convert a shapefile to
+geographic coordinates, first load in the shapefile by clicking
+<tt class="docutils literal">Layer&gt;Add Vector <span class="pre">Layer...</span></tt> in the menu and then load the shapefile.</p>
+<img alt="Add vector layer" src="./images/convert-shapefile/output_6_0.png" />
+<p>Once the shapefile is loaded, you should see the shapes in QGIS. To
+export in the correct format, right click on the layer name in the
+Layers section and select <tt class="docutils literal">Save <span class="pre">as...</span></tt>.</p>
+<img alt="save as" src="./images/convert-shapefile/output_8_0.png" />
+<p>In the CRS section, select <tt class="docutils literal">browse</tt>.</p>
+<img alt="browse" src="./images/convert-shapefile/output_10_0.png" />
+<p>There is an <em>unbelievable</em> number of geometric CRS formats. After
+consulting
+<a class="reference external" href="http://en.wikipedia.org/wiki/Geographic_coordinate_system">Wikipedia</a>,
+I choose WGS 84.</p>
+<img alt="WGS 84" src="./images/convert-shapefile/output_12_0.png" />
+<p>Hit OK, give the new shapefile a name and complete the export
+process. Now try reading the new shapefile:</p>
+<div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">readshapefile</span><span class="p">(</span><span class="s2">&quot;Neighborhoods_geometric&quot;</span><span class="p">,</span><span class="s2">&quot;Neighborhoods&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<img alt="shapefile in matplotlib" src="./images/convert-shapefile/output_14_0.png" />
+<p>Finally, the shapefile should now be plot-able in matplotlib.</p>
+
+    </div>
+  </article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="./authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="./archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="./categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="./tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Finding the Common Mode Rejection Coefficient | Kyler Brown
+</title>
+  <link rel="canonical" href="./finding-common-mode-rejection-coefficient.html">
+
+
+  <link rel="stylesheet" href="./theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="./theme/css/theme.css">
+
+  
+  <meta name="description" content="Compute common mode rejection coefficient for paired neural electrodes">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title"><a href="./">Kyler Brown</a></h1>
+      <p class="text-muted">Work and Play as a Data Scientist</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a href="#" target="_blank">About</a></li>
+            <li class=" list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a class="fa fa-github" href="https://github.com/kylerbrown" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fa fa-linkedin" href="https://www.linkedin.com/in/kylerbrown/" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fa fa-twitter" href="https://twitter.com/kye_brown" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Finding the Common Mode Rejection Coefficient
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2015-12-25T00:00:00-08:00">
+          <i class="fa fa-clock-o"></i>
+          Fri 25 December 2015
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-folder-open-o"></i>
+          <a href="./category/science.html">Science</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fa fa-user-o"></i>
+              <a href="./author/kyler-brown.html">Kyler Brown</a>          </li>
+          <li class="list-inline-item">
+            <i class="fa fa-files-o"></i>
+              <a href="./tag/signal-processing.html">#signal processing</a>,               <a href="./tag/python.html">#python</a>,               <a href="./tag/science.html">#science</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <p>(an IPython notebook with the same content can be found here: <a class="reference external" href="https://gist.github.com/kylerbrown/a612923f1cd071c9bedd">https://gist.github.com/kylerbrown/a612923f1cd071c9bedd</a> )</p>
+<p>Assume you have two channels, <span class="formula"><i>A</i><sub><i>t</i></sub></span> and <span class="formula"><i>B</i><sub><i>t</i></sub></span> where
+<span class="formula"><i>t</i> ∈ 0, 1, 2, ...<i>T</i></span>. Each channel is composed of a linear sum
+of a unique signal and a common noise, with the noise scaled by an
+unknown constant.</p>
+<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<i>A</i><sub><i>t</i></sub>
+</span>
+<span class="arraycell align-l">
+ = <i>a</i><sub><i>t</i></sub> + <i>N</i><sub><i>t</i></sub>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>B</i><sub><i>t</i></sub>
+</span>
+<span class="arraycell align-l">
+ = <i>b</i><sub><i>t</i></sub> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>N</i><sub><i>t</i></sub></span><span class="ignored">)/(</span><span class="denominator"><i>C</i></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+
+</span>
+</span>
+</div>
+<p>If <span class="formula"><i>C</i></span> was known, we could remove the noise from the difference of
+the two channels optimally, that is:</p>
+<div class="formula">
+<i>A</i><sub><i>t</i></sub> − <i>CB</i><sub><i>t</i></sub> = (<i>a</i><sub><i>t</i></sub> + <i>N</i><sub><i>t</i></sub>) − <i>C</i>(<i>b</i><sub><i>t</i></sub> + <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>N</i><sub><i>t</i></sub></span><span class="ignored">)/(</span><span class="denominator"><i>C</i></span><span class="ignored">)</span></span>) = <i>a</i><sub><i>t</i></sub> − <i>C</i><i>b</i><sub><i>t</i></sub>
+</div>
+<p>In paired, chonically implanted electrodes, common noise and movement
+artifacts can be reduced (but in practice not eliminated) using this
+method.</p>
+<div class="section" id="solving-for-c-analytically">
+<h2>Solving for <span class="formula"><i>C</i></span> analytically</h2>
+<p>We'd like to minimize the <strong>s</strong>um <strong>s</strong>quared <strong>d</strong>ifference
+between <span class="formula"><i>A</i><sub><i>n</i></sub></span> and <span class="formula"><i>CB</i><sub><i>N</i></sub></span>.</p>
+<div class="formula">
+<i>SSD</i> = <span class="limits"><span class="limit">⎲</span><span class="limit">⎳</span></span>(<i>A</i><sub><i>t</i></sub> − <i>C</i><i>B</i><sub><i>t</i></sub>)<sup>2</sup>
+</div>
+<p>Taking the derivative with respect to C and setting the derivative to
+zero, we find</p>
+<div class="formula">
+<span class="environment"><span class="arrayrow">
+<span class="arraycell align-r">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>dSSD</i></span><span class="ignored">)/(</span><span class="denominator"><i>dC</i></span><span class="ignored">)</span></span>
+</span>
+<span class="arraycell align-l">
+ = 
+</span>
+<span class="arraycell align-r">
+2<span class="limits"><span class="limit">⎲</span><span class="limit">⎳</span></span>(<i>A</i><sub><i>t</i></sub> − <i>C</i><i>B</i><sub><i>t</i></sub>)<i>B</i><sub><i>t</i></sub>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+<span class="arraycell align-r">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+0
+</span>
+<span class="arraycell align-l">
+ = 
+</span>
+<span class="arraycell align-r">
+<span class="limits"><span class="limit">⎲</span><span class="limit">⎳</span></span><i>A</i><sub><i>t</i></sub><i>B</i><sub><i>t</i></sub> − <i>C</i><span class="limits"><span class="limit">⎲</span><span class="limit">⎳</span></span><i>B</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>t</i></sub></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+<span class="arraycell align-r">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+<i>C</i>
+</span>
+<span class="arraycell align-l">
+ = 
+</span>
+<span class="arraycell align-r">
+<span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="limits"><span class="limit">⎲</span><span class="limit">⎳</span></span><i>A</i><sub><i>t</i></sub><i>B</i><sub><i>t</i></sub></span><span class="ignored">)/(</span><span class="denominator"><span class="limits"><span class="limit">⎲</span><span class="limit">⎳</span></span><i>B</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>t</i></sub></span></span><span class="ignored">)</span></span>
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+ 
+</span>
+<span class="arraycell align-l">
+ 
+</span>
+<span class="arraycell align-r">
+ 
+</span>
+
+</span>
+<span class="arrayrow">
+<span class="arraycell align-r">
+
+</span>
+
+</span>
+</span>
+</div>
+<p>In Python, this would look something like:</p>
+<pre class="code python literal-block">
+<span class="c1"># setting up the problem</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">common_noise</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">true_C</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">signal_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="mi">110</span><span class="p">)</span>
+<span class="n">signal_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">signal_1</span> <span class="o">+</span> <span class="n">common_noise</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">signal_2</span> <span class="o">+</span> <span class="n">common_noise</span> <span class="o">/</span> <span class="n">true_C</span>
+
+<span class="c1"># solving for C</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;True C: {}, computed C {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">true_C</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
+</pre>
+<pre class="literal-block">
+True C: 0.5, computed C 0.499955696052
+</pre>
+<pre class="code python literal-block">
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">C</span><span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;A-CB&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</pre>
+<img alt="Noisy B signal" src="./images/common_mode_rejection_files/common_mode_rejection_3_0.png" />
+<p>Interestingly, this method works less well with a lower noise channels,
+for example:</p>
+<pre class="code python literal-block">
+<span class="n">common_noise</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">signal_1</span> <span class="o">+</span> <span class="n">common_noise</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">signal_2</span> <span class="o">+</span> <span class="n">common_noise</span> <span class="o">/</span> <span class="n">true_C</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;True C: {}, computed C {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">true_C</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
+</pre>
+<pre class="literal-block">
+True C: 0.5, computed C 0.350776916893
+</pre>
+<pre class="code python literal-block">
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="o">-</span><span class="n">C</span><span class="o">*</span><span class="n">B</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;A-CB&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</pre>
+<img alt="Less noisy B signal" src="./images/common_mode_rejection_files/common_mode_rejection_6_0.png" />
+</div>
+<div class="section" id="solving-for-c-using-optimization">
+<h2>Solving for <span class="formula"><i>C</i></span> using optimization</h2>
+<p>We can use optimization packages, such as scipy's <tt class="docutils literal">optimize</tt> module to
+check our analytical solution.</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="k">def</span> <span class="nf">SSD</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns the sum squared of a - c*b&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">SSD</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;True C: {}, computed C: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">true_C</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
+</pre>
+<pre class="literal-block">
+True C: 0.5, computed C: 0.350776907985
+</pre>
+<p>Which is the same solution found analytically.</p>
+</div>
+<div class="section" id="quality-of-common-mode-rejection-over-signal-to-noise-ratios">
+<h2>Quality of common mode rejection over signal-to-noise ratios</h2>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_c</span><span class="p">(</span><span class="n">snr</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">true_C</span><span class="p">):</span>
+    <span class="n">signal_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">signal_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">common_noise</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">snr</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">signal_1</span> <span class="o">+</span> <span class="n">common_noise</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">signal_2</span> <span class="o">+</span> <span class="n">common_noise</span> <span class="o">/</span> <span class="n">true_C</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre>
+<pre class="code python literal-block">
+<span class="n">true_C</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="n">find_c</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">true_C</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">snr</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">snr</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Measured C&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;SNR&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;measured C&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">true_C</span><span class="p">,</span> <span class="n">snr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True C&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">snr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Naïve C&quot;</span><span class="p">,</span>
+           <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">snr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;C &lt; 1, (coefficient fit to larger signal)&quot;</span><span class="p">);</span>
+</pre>
+<img alt="Figure 3" src="./images/common_mode_rejection_files/common_mode_rejection_12_0.png" />
+<pre class="code python literal-block">
+<span class="n">true_C</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="n">find_c</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">true_C</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">snr</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">snr</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Measured C&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;SNR&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;measured C&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">true_C</span><span class="p">,</span> <span class="n">snr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True C&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">snr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Naïve C&quot;</span><span class="p">,</span>
+           <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">snr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">snr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;C &gt; 1, (coefficient fit to smaller signal)&quot;</span><span class="p">);</span>
+</pre>
+<img alt="Figure 4" src="./images/common_mode_rejection_files/common_mode_rejection_13_0.png" />
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion</h2>
+<p>Optimizing <span class="formula"><i>C</i></span> works best when the SNR is low, so a segment of
+recording without much signal is ideal. When fitting <span class="formula"><i>C</i></span>, choose
+the noiser of the two channels.</p>
+</div>
+
+    </div>
+  </article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="./authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="./archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="./categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="./tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+</body>
+
+</html>

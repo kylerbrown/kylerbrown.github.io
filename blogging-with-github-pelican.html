@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Blogging with Github + Pelican | Kyler Brown
+</title>
+  <link rel="canonical" href="./blogging-with-github-pelican.html">
+
+
+  <link rel="stylesheet" href="./theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="./theme/css/theme.css">
+
+  
+  <meta name="description" content="In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github site. Pelican is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the …">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title"><a href="./">Kyler Brown</a></h1>
+      <p class="text-muted">Work and Play as a Data Scientist</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a href="#" target="_blank">About</a></li>
+            <li class=" list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a class="fa fa-github" href="https://github.com/kylerbrown" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fa fa-linkedin" href="https://www.linkedin.com/in/kylerbrown/" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fa fa-twitter" href="https://twitter.com/kye_brown" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Blogging with Github + Pelican
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2014-08-20T00:00:00-07:00">
+          <i class="fa fa-clock-o"></i>
+          Wed 20 August 2014
+        </li>
+        <li class="list-inline-item">
+          <i class="fa fa-folder-open-o"></i>
+          <a href="./category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fa fa-user-o"></i>
+              <a href="./author/kyler-brown.html">Kyler Brown</a>          </li>
+          <li class="list-inline-item">
+            <i class="fa fa-files-o"></i>
+              <a href="./tag/pelican.html">#pelican</a>,               <a href="./tag/python.html">#python</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <p>In the name of fun and procrastination, I have moved my irregular internet musings to this Pelican powered github site.</p>
+<p><a href="http://blog.getpelican.com/">Pelican</a> is a neat little static site generator, similar to Jekyll, but using Python (my preferred language). Pelican generates content from markdown, reStructuredText or html files, the latter allowing the publishing of IPython notebooks and .org files, both of which I use extensively.</p>
+<p><a href="https://pages.github.com/">Github pages</a> hosts websites directly from code repositories, an appealing idea given Github already hosts all my publicly available code.</p>
+<p>I faced one critical conceptual stumbling block: when making a User page (user.github.io) the processed html lives in the <em>main</em> branch of the git repository, while the source should live somewhere else, such a second branch called <em>source</em>. Thankfully, this <a href="http://ntanjerome.org/blog/how-to-setup-github-user-page-with-pelican/">post</a> cleared up much of my confusion. Below are my abbreviated instructions  for *nix systems:</p>
+<h2>Install Pelican</h2>
+<p>If Pip is not already on your system, install it. <a href="http://pip.readthedocs.org/en/latest/installing.html">Directions</a>.</p>
+<p>To install Pelican, you can use a virtualenv if you prefer or simply use the <code>--user</code> flag. The ghp-import is used by the Pelican MakeFile to push the output folder to the main branch. To create content with <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>, you should also install the Markdown library.</p>
+<div class="highlight"><pre><span></span>pip install --user pelican ghp-import markdown
+</pre></div>
+
+
+<h2>Create the Github repository</h2>
+<p>If not already created, create the repository by following the instructions 1-2 <a href="https://pages.github.com/#user-site">here</a>, then</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> YOURUSERNAME.github.io
+</pre></div>
+
+
+<h2>Generate a skeleton pelican project</h2>
+<p>Add a skeleton pelican project to the <code>source</code> branch</p>
+<div class="highlight"><pre><span></span>git checkout -b <span class="nb">source</span>
+pelican-quickstart
+</pre></div>
+
+
+<h2>Create some content</h2>
+<p>Content is added to the <code>content</code> folder, see the <a href="http://docs.getpelican.com/en/3.4.0/content.html">pelican</a> documentation for formatting details. </p>
+<div class="highlight"><pre><span></span><span class="nb">echo</span> -e <span class="s2">&quot;Title: Example\nDate: 1970-01-01\n Hello, Internet!&quot;</span> &gt; content/examplepost.md
+</pre></div>
+
+
+<h2>Preview</h2>
+<div class="highlight"><pre><span></span>make html
+make serve
+</pre></div>
+
+
+<p>Point your browser to <code>localhost:8000</code>.</p>
+<h2>Publish</h2>
+<div class="highlight"><pre><span></span>make github
+</pre></div>
+
+
+<p>Done. In a couple minutes, your website should be visible at YOURUSERNAME.github.io.</p>
+<p>From here, peruse the <a href="http://docs.getpelican.com">Pelican documentation</a> for themes and other settings.</p>
+    </div>
+  </article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="./authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="./archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="./categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="./tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+</body>
+
+</html>
